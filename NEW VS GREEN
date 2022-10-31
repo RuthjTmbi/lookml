@@ -1,0 +1,48 @@
+name: New vs Evergreen
+    title: New vs Evergreen
+    model: tmb_all
+    explore: affiliate_pages
+    type: looker_grid
+    fields: [
+      metric_ga_adobe_airtable_day_page.new_vs_evergreen,
+      affiliate_pages.num_affiliate_pages,
+      metric_ga_adobe_airtable_day_page.sessions,
+      metric_ga_adobe_airtable_day_page.percent_affiliate_sessions,
+      metric_affiliate_page_partners.partner_clicks,
+      metric_affiliate_page_partners.partner_orders,
+      metric_affiliate_page_partners.partner_conversion,
+      metric_affiliate_page_partners.partner_revenue,
+      metric_affiliate_page_partners.partner_commission,
+      metric_affiliate_page_partners.partner_revenue_per_page,
+      metric_affiliate_page_partners.partner_revenue_per_visit,
+      metric_affiliate_page_partners.revenue,
+      metric_affiliate_page_partners.engagement,
+    ]
+    sorts: [metric_affiliate_page_partners.partner_revenue desc]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    transpose: false
+    truncate_text: false
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual shows various engagement and affiliate revenue metrics for content categorized as being New vs Evergreen. A page is a new vs evergreen content based on if the published date was within the 30 days of selected period"
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_pages.ingestion_date
+      Brand: affiliate_pages.brand_formatted
+      Partner: metric_affiliate_page_partners.vendor
+      Page URL: affiliate_pages.page_url
+      Content Series: cleaned_airtable_series.series_type
+      Airtable Tags: cleaned_airtable_tags.tag
+      SEO Cluster: cleaned_airtable_clusters.seo_cluster
+      Digital Editor: metric_ga_adobe_airtable_day_page.digital_editor_name
+    col: 0
+    width: 24
+    height: 4
