@@ -86,6 +86,7 @@ dashboard: affiliate_pop
     ]
     sorts: [metric_affiliate_day_brand_partners.pop_current_partner_revenue desc]
     limit: 500
+    total: true
     show_view_names: false
     show_row_numbers: false
     truncate_text: false
@@ -238,6 +239,7 @@ dashboard: affiliate_pop
     ]
     sorts: [metric_affiliate_day_brand_partners.pop_current_partner_commission desc]
     limit: 500
+    total: true
     show_view_names: false
     show_row_numbers: false
     truncate_text: false
