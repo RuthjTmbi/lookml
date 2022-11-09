@@ -1,0 +1,1323 @@
+dashboard: affiliate_pop
+  title: Affiliate Period over Period
+  layout: newspaper
+  preferred_viewer: dashboards-next
+
+  elements:
+  - name: Dashboard Navigation
+    type: text
+    row: 0
+    col: 0
+    width: 24
+    height: 2
+    body_text: |-
+      <div style="background-color: #FFFFFF; padding: 5px 5px; width:100%; text-align:center; font-size: 25px; color: #25678F">
+        <a style="padding: 5px; float: center; line-height: 40px; margin-left: 8px; color: #25678F; font-weight: 450" href="/dashboards/tmb_all::affiliate_overview">Overview</a> |
+        <a style="padding: 5px; float: center; line-height: 40px; margin-left: 8px; color: #25678F; font-weight: 450" href="/dashboards/tmb_all::affiliate_product">Product</a> |
+        <a style="padding: 5px; float: center; line-height: 40px; margin-left: 8px; color: #25678F; font-weight: 450" href="/dashboards/tmb_all::affiliate_content">Content</a> |
+        <a style="padding: 5px; float: center; line-height: 40px; margin-left: 8px; color: #25678F; font-weight: 450" href="/dashboards/tmb_all::affiliate_pop">Period</a>
+      </div>
+
+  - name: Revenue Period over Period
+    title: Revenue Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.partner_revenue
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the gross revenue trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 2
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Revenue By Brand Period over Period
+    title: Revenue By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_revenue,
+      metric_affiliate_day_brand_partners.pop_previous_partner_revenue,
+      metric_affiliate_day_brand_partners.pop_change_partner_revenue,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_revenue,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_revenue desc]
+    limit: 500
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_revenue: This Period - Gross Revenue
+      metric_affiliate_day_brand_partners.pop_previous_partner_revenue: Previous Period - Gross Revenue
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_revenue:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_revenue:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_revenue]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_revenue]
+      }
+    ]
+    note:
+      text: "This visual displays the gross revenue by brand with comparison between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 2
+    col: 12
+    width: 12
+    height: 8
+
+  - name: Commission Period over Period
+    title: Commission Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.partner_commission
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the commission revenue trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 10
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Commission By Brand Period over Period
+    title: Commission By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_commission,
+      metric_affiliate_day_brand_partners.pop_previous_partner_commission,
+      metric_affiliate_day_brand_partners.pop_change_partner_commission,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_commission,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_commission desc]
+    limit: 500
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_commission: This Period - Commission Revenue
+      metric_affiliate_day_brand_partners.pop_previous_partner_commission: Previous Period - Commission Revenue
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_commission:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_commission:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_commission]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_commission]
+      }
+    ]
+    note:
+      text: "This visual compares the commission revenue by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 10
+    col: 12
+    width: 12
+    height: 8
+
+  - name: Clicks Period over Period
+    title: Clicks Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.partner_clicks
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the clicks trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 18
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Clicks By Brand Period over Period
+    title: Clicks By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_clicks,
+      metric_affiliate_day_brand_partners.pop_previous_partner_clicks,
+      metric_affiliate_day_brand_partners.pop_change_partner_clicks,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_clicks,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_clicks desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_clicks: This Period - Clicks
+      metric_affiliate_day_brand_partners.pop_previous_partner_clicks: Previous Period - Clicks
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_clicks:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_clicks:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_clicks]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_clicks]
+      }
+    ]
+    note:
+      text: "This visual compares clicks by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 18
+    col: 12
+    width: 12
+    height: 8
+
+  - name: Orders Period over Period
+    title: Orders Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.partner_orders
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the orders trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 26
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Orders By Brand Period over Period
+    title: Orders By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_orders,
+      metric_affiliate_day_brand_partners.pop_previous_partner_orders,
+      metric_affiliate_day_brand_partners.pop_change_partner_orders,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_orders,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_orders desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_orders: This Period - Orders
+      metric_affiliate_day_brand_partners.pop_previous_partner_orders: Previous Period - Orders
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_orders:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_orders:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_orders]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_orders]
+      }
+    ]
+    note:
+      text: "This visual compares orders by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 26
+    col: 12
+    width: 12
+    height: 8
+
+  - name: Conversion Period over Period
+    title: Conversion Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.conversion
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the conversion rate trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 34
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Conversion By Brand Period over Period
+    title: Conversion By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_conversion,
+      metric_affiliate_day_brand_partners.pop_previous_partner_conversion,
+      metric_affiliate_day_brand_partners.pop_change_partner_conversion,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_conversion,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_conversion desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_conversion: This Period - Conversion
+      metric_affiliate_day_brand_partners.pop_previous_partner_conversion: Previous Period - Conversion
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_conversion:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_conversion:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_conversion]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_conversion]
+      }
+    ]
+    note:
+      text: "This visual compares conversion rate by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 34
+    col: 12
+    width: 12
+    height: 8
+
+  - name: AOV Period over Period
+    title: AOV Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.average_order_value
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the average order value (AOV) trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 42
+    col: 0
+    width: 12
+    height: 8
+
+  - name: AOV By Brand Period over Period
+    title: AOV By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_average_order_value,
+      metric_affiliate_day_brand_partners.pop_previous_partner_average_order_value,
+      metric_affiliate_day_brand_partners.pop_change_partner_average_order_value,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_average_order_value,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_average_order_value desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_average_order_value: This Period - AOV
+      metric_affiliate_day_brand_partners.pop_previous_partner_average_order_value: Previous Period - AOV
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_average_order_value:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_average_order_value:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_average_order_value]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_average_order_value]
+      }
+    ]
+    note:
+      text: "This visual compares average order value (AOV) by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 42
+    col: 12
+    width: 12
+    height: 8
+
+  - name: EPC Period over Period
+    title: EPC Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.earnings_per_click
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares earnings per click (EPC) trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 50
+    col: 0
+    width: 12
+    height: 8
+
+  - name: EPC By Brand Period over Period
+    title: EPC By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_earnings_per_click,
+      metric_affiliate_day_brand_partners.pop_previous_partner_earnings_per_click,
+      metric_affiliate_day_brand_partners.pop_change_partner_earnings_per_click,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_earnings_per_click,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_earnings_per_click desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_earnings_per_click: This Period - EPC
+      metric_affiliate_day_brand_partners.pop_previous_partner_earnings_per_click: Previous Period - EPC
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_earnings_per_click:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_earnings_per_click:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_earnings_per_click]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_earnings_per_click]
+      }
+    ]
+    note:
+      text: "This visual compares earnings per click (EPC) by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 50
+    col: 12
+    width: 12
+    height: 8
+
+  - name: Commission Rate Period over Period
+    title: Commission Rate Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_line
+    fields: [
+      affiliate_brands.period,
+      affiliate_brands.pop_row,
+      metric_affiliate_day_brand_partners.commission_rate
+    ]
+    pivots: [affiliate_brands.period]
+    sorts: [
+      affiliate_brands.period desc,
+      affiliate_brands.pop_row
+    ]
+    limit: 500
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    legend_position: center
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    note:
+      text: "This visual compares the commission rate trend over time between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 58
+    col: 0
+    width: 12
+    height: 8
+
+  - name: Commission Rate By Brand Period over Period
+    title: Commission Rate By Brand Period over Period
+    model: tmb_all
+    explore: affiliate_brands
+    type: looker_grid
+    fields: [
+      metric_affiliate_day_brand_partners.pop_current_partner_commission_rate,
+      metric_affiliate_day_brand_partners.pop_previous_partner_commission_rate,
+      metric_affiliate_day_brand_partners.pop_change_partner_commission_rate,
+      metric_affiliate_day_brand_partners.pop_pct_change_partner_commission_rate,
+      affiliate_brands.brand_formatted
+    ]
+    sorts: [metric_affiliate_day_brand_partners.pop_current_partner_commission_rate desc]
+    limit: 500
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: true
+    truncate_header: false
+    series_labels:
+      metric_affiliate_day_brand_partners.pop_current_partner_commission_rate: This Period - Commission Rate
+      metric_affiliate_day_brand_partners.pop_previous_partner_commission_rate: Previous Period - Commission Rate
+    series_cell_visualizations:
+      metric_affiliate_day_brand_partners.pop_current_partner_commission_rate:
+        is_active: true
+      metric_affiliate_day_brand_partners.pop_previous_partner_commission_rate:
+        is_active: true
+    conditional_formatting: [
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number,value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_pct_change_partner_commission_rate]
+      },
+      {
+        type: along a scale...,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: !!null '',
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0,
+          options: {
+            steps: 5,
+            constraints: {
+              min: {type: minimum},
+              mid: {type: number, value: 0},
+              max: {type: maximum}
+            },
+            mirror: true,
+            reverse: false,
+            stepped: false
+          }
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: [metric_affiliate_day_brand_partners.pop_change_partner_commission_rate]
+      }
+    ]
+    note:
+      text: "This visual compares the commission rate by brand between the selected period and the previous period."
+      state: collapsed
+      display: hover
+    defaults_version: 1
+    listen:
+      Date: affiliate_brands.date_filter
+      Brand: affiliate_brands.brand_formatted
+      Partner: metric_affiliate_day_brand_partners.vendor
+      Period Granularity: affiliate_brands.choose_breakdown
+      Comparison Period: affiliate_brands.compare_to
+    row: 58
+    col: 12
+    width: 12
+    height: 8
+
+  # Filter controls section
+  filters:
+  - name: Date
+    title: Date
+    type: field_filter
+    default_value: 30 days ago for 30 days
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: day_range_picker
+      display: inline
+      options: []
+    model: tmb_all
+    explore: affiliate_brands
+    field: affiliate_brands.date_filter
+
+  - name: Brand
+    title: Brand
+    type: field_filter
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options: [
+        "Taste of Home",
+        "Reader's Digest",
+        "Family Handyman",
+        "The Healthy",
+        "Birds and Blooms",
+        "Reader's Digest CA",
+        "Selection CA",
+        "Best Health CA"
+      ]
+    model: tmb_all
+    explore: affiliate_brands
+    field: affiliate_brands.brand_formatted
+
+  - name: Partner
+    title: Partner
+    type: field_filter
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options: [
+        "Amazon",
+        "Skimlinks"
+      ]
+    model: tmb_all
+    explore: affiliate_brands
+    field: metric_affiliate_day_brand_partners.vendor
+
+  - name: Period Granularity
+    title: Period Granularity
+    type: field_filter
+    default_value: "DAY"
+    allow_multiple_values: false
+    required: false
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options: []
+    model: tmb_all
+    explore: affiliate_brands
+    field: affiliate_brands.choose_breakdown
+
+  - name: Comparison Period
+    title: Comparison Period
+    type: field_filter
+    default_value: "Period"
+    allow_multiple_values: false
+    required: false
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options: []
+    model: tmb_all
+    explore: affiliate_brands
+    field: affiliate_brands.compare_to
