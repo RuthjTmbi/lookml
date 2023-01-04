@@ -1,0 +1,518 @@
+ dashboard: acquisition
+  title: Acquisition
+  layout: newspaper
+  preferred_viewer: dashboards-next
+  elements:
+
+  # Overview section
+
+  - name: "<font size=16px>Acquisition Overview</font>"
+    type: text
+    title_text: "<font size=16px>Acquisition Overview</font>"
+    row: 2
+    col: 0
+    width: 24
+    height: 3
+
+  - title: Sessions
+    name: Sessions
+    model: tmb_all
+    explore: page_session
+    type: single_value
+    fields: [page_session.sessions]
+    limit: 500
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    enable_conditional_formatting: true
+    conditional_formatting: [
+      {
+        type: not null,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: "#ffffff",
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: !!null ''
+      }
+    ]
+    note_state: collapsed
+    note_display: hover
+    note_text: Sessions based on all filters.
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 5
+    col: 0
+    width: 12
+    height: 2
+
+  - title: Return Sessions
+    name: Return Sessions
+    model: tmb_all
+    explore: page_session
+    type: single_value
+    fields: [page_session.percent_return_sessions]
+    custom_color_enabled: true
+    show_single_value_title: true
+    enable_conditional_formatting: true
+    conditional_formatting: [
+      {
+        type: not null,
+        value: !!null '',
+        background_color: "#00C3CB",
+        font_color: "#ffffff",
+        color_application: {
+          collection_id: tmb,
+          palette_id: tmb-sequential-0
+        },
+        bold: false,
+        italic: false,
+        strikethrough: false,
+        fields: !!null ''
+      }
+    ]
+    note_state: collapsed
+    note_display: hover
+    note_text: Percent of return sessions based on filters.
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 5
+    col: 12
+    width: 12
+    height: 2
+
+  - title: Sessions by Channel
+    name: Sessions by Channel
+    model: tmb_all
+    explore: page_session
+    type: looker_bar
+    fields: [page_session.sessions, page_session.channel_grouping]
+    sorts: [page_session.sessions desc]
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    limit_displayed_rows: true
+    legend_position: center
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '5'
+    custom_color_enabled: true
+    show_single_value_title: true
+    note_state: collapsed
+    note_display: hover
+    note_text: Traffic (i.e. Sessions) by Channel based on filters.
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 7
+    col: 0
+    width: 12
+    height: 11
+
+  - title: Sessions by Channel and Device
+    name: Sessions by Channel and Device
+    model: tmb_all
+    explore: page_session
+    type: looker_bar
+    fields: [page_session.sessions, page_session.channel_grouping, page_session.device_category]
+    pivots: [page_session.device_category]
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    limit_displayed_rows: true
+    legend_position: center
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '10'
+    stacking: normal
+    ordering: desc
+    custom_color_enabled: true
+    show_single_value_title: true
+    note_state: collapsed
+    note_display: hover
+    note_text: Traffic (i.e. Sessions) by Channel and Device based on filters.
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 7
+    col: 12
+    width: 12
+    height: 11
+
+  - title: Sessions Over Time
+    name: Sessions Over Time
+    model: tmb_all
+    explore: page_session
+    type: looker_column
+    dimensions: [page_session.session_start_date, page_session.channel_grouping]
+    measures: [page_session.sessions]
+    pivots: [page_session.channel_grouping]
+    sorts: [page_session.sessions desc]
+    row_total: right
+    query_timezone: America/New_York
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    stacking: normal
+    legend_position: center
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_view_names: false
+    interpolation: linear
+    note_state: collapsed
+    note_display: hover
+    note_text: Traffic by Week & Audience Trait (based on Audience Cohort filter).
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 18
+    col: 0
+    width: 24
+    height: 10
+
+  - title: Engagement
+    name: Engagement
+    model: tmb_all
+    explore: page_session
+    type: looker_grid
+    fields: [
+      page_session.channel_grouping,
+      page_session.sessions,
+      page_session.percent_return_sessions,
+      page_session.bounce_rate,
+      page_session.timeonsite_average_per_session
+    ]
+    sorts: [page_session.sessions desc]
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_text: false
+    hide_totals: false
+    hide_row_totals: true
+    size_to_fit: true
+    table_theme: transparent
+    limit_displayed_rows: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '10'
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_background_color: "#E0E0E0"
+    header_font_size: '20'
+    rows_font_size: '20'
+    dynamic_fields: [
+      {
+        table_calculation: of_total_sessions,
+        label: "% of Total Sessions",
+        expression: "${page_session.sessions}/sum(${page_session.sessions})",
+        value_format: !!null '',
+        value_format_name: percent_2,
+        _kind_hint: measure,
+        _type_hint: number
+      }
+    ]
+    column_order: [
+      page_session.channel_grouping,
+      of_total_sessions,
+      page_session.percent_return_sessions,
+      page_session.bounce_rate,
+      page_session.timeonsite_average_per_session
+    ]
+    series_column_widths:
+      page_session.channel_grouping: 252
+    series_cell_visualizations:
+      page_session.percent_return_sessions:
+        is_active: true
+        palette:
+          palette_id: tmb-sequential-0
+          collection_id: tmb
+      page_session.bounce_rate:
+        is_active: true
+        palette:
+          palette_id: tmb-sequential-0
+          collection_id: tmb
+      of_total_sessions:
+        is_active: true
+        palette:
+          palette_id: tmb-sequential-0
+          collection_id: tmb
+      page_session.timeonsite_average_per_session:
+        is_active: true
+        palette:
+          palette_id: tmb-sequential-0
+          collection_id: tmb
+    series_labels:
+      page_session.channel_grouping: Source Channel
+      page_session.percent_return_sessions: Return Sessions
+      page_session.bounce_rate: Bounce Rate
+      page_session.timeonsite_average_per_session: Avg Time on Site
+      of_total_sessions: "% of Total Sessions"
+    hidden_fields: [page_session.sessions]
+    truncate_column_names: false
+    show_value_labels: false
+    note_state: collapsed
+    note_display: hover
+    note_text: Engagement metrics by Channel based on filters. Sorted by highest traffic.
+    listen:
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+    row: 34
+    col: 0
+    width: 24
+    height: 10
+
+  # Acquisition Detail section
+  - name: "<font size=16px>Acquisition Detail</font>"
+    type: text
+    title_text: "<font size=16px>Acquisition Detail</font>"
+    row: 44
+    col: 0
+    width: 24
+    height: 3
+
+  - title: Top Landing Pages
+    name: Top Landing Pages
+    model: tmb_all
+    explore: page_session
+    type: sankey
+    fields: [page_session.device_category, page_session.channel_grouping, page_session.landing_page_path, page_session.sessions]
+    sorts: [page_session.sessions desc]
+    limit: 20
+    query_timezone: America/New_York
+    hidden_fields: []
+    hidden_points_if_no: []
+    series_labels: {}
+    show_view_names: false
+    label_type: name
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    defaults_version: 0
+    series_types: {}
+    leftAxisLabelVisible: false
+    leftAxisLabel: ''
+    rightAxisLabelVisible: false
+    rightAxisLabel: ''
+    smoothedBars: false
+    orientation: automatic
+    labelPosition: left
+    percentType: total
+    percentPosition: inline
+    valuePosition: right
+    labelColorEnabled: false
+    labelColor: "#FFF"
+    note_state: collapsed
+    note_display: hover
+    note_text: Traffic by Landing page (i.e. Sessions)
+    listen:
+      Date: page_session.session_start_date
+      Brand: page_session.landing_page_hostname
+      Device [Optional]: page_session.device_category
+      Geo Area [Optional]: page_session.us_vs_international
+      Channel [Optional]: page_session.channel_grouping
+    row: 47
+    col: 0
+    width: 24
+    height: 11
+
+    # Navbar section
+  - title: Navigation Bar
+    name: Navigation Bar
+    model: tmb_all
+    explore: page_session
+    type: single_value
+    fields: [page_session.dash_nav]
+    query_timezone: America/New_York
+    custom_color_enabled: true
+    size_to_fit: true
+    table_theme: transparent
+    listen:
+      Date: page_session.session_start_date
+    row: 0
+    col: 0
+    width: 24
+    height: 2
+
+  # Filters section
+  filters:
+  - name: Date
+    title: Date
+    type: field_filter
+    default_value: last week
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+      options: []
+    model: tmb_all
+    explore: page_session
+    listens_to_filters: []
+    field: page_session.session_start_date
+
+  - name: Brand
+    title: Brand
+    type: field_filter
+    default_value: www.rd.com, www.familyhandyman.com, www.tasteofhome.com, www.birdsandblooms.com, www.thehealthy.com
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options: [
+        'www.besthealthmag.ca',
+        'www.birdsandblooms.com',
+        'www.familyhandyman.com',
+        'www.readersdigest.ca',
+        'www.rd.com',
+        'www.tasteofhome.com',
+        'www.thehealthy.com',
+        'www.selection.ca',
+        'shop.tasteofhome.com',
+        'shop.rd.com',
+        'www.tasteofhomebox.com',
+        'www.mydiyuniversity.com'
+      ]
+    model: tmb_all
+    explore: page_session
+    listens_to_filters: []
+    field: page_session.landing_page_hostname
+
+  - name: Device [Optional]
+    title: Device [Optional]
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options:
+          - desktop
+          - mobile
+          - tablet
+    model: tmb_all
+    explore: page_session
+    listens_to_filters: []
+    field: page_session.device_category
+
+  - name: Geo Area [Optional]
+    title: Geo Area [Optional]
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options:
+      - United States
+      - International
+    model: tmb_all
+    explore: page_session
+    listens_to_filters: []
+    field: page_session.us_vs_international
+
+  - name: Channel [Optional]
+    title: Channel [Optional]
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+      options:
+      - Direct
+      - Display
+      - Email
+      - Newsletter
+      - Organic Search
+      - Paid Search
+      - Paid Social
+      - Referral
+      - Social
+      - "(Other)"
+    model: tmb_all
+    explore: page_session
+    listens_to_filters: []
+    field: page_session.channel_grouping
